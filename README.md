@@ -19,7 +19,7 @@ A user-friendly graphical interface for RFantibody. This web-based GUI makes it 
 
 1. Clone the repository
 ```bash
-git clone https://github.com/Kangjuheon/rfantibody-gui.git
+git clone https://github.com/jhkang-rsrch/rfantibody-gui.git
 ```
 
 2. Navigate to project directory
