@@ -121,6 +121,7 @@ def exec_in_worker(cmd: str, job_dir: Path, job_id: str, stage: str) -> Tuple[in
 def orchestrate_pipeline(
     job_name: str,
     mode: str,
+    fold: str,
     hotspots: str,
     rf_diffusion_designs: int,
     rf_diffusion_final_step: int,
@@ -210,26 +211,43 @@ def orchestrate_pipeline(
             "log_tail": (log2_tail or "")[-4000:],
         }
     
-    rf2_inp = mpnn_out
-    rf2_out = out_dir / "rf2"
-    ensure_dirs(rf2_out)
-
-    cmd3 = " ".join([
-        "poetry run python /home/src/rfantibody/rf2/rf2_predict.py",
-        f"input.pdb_dir={rf2_inp}",
-        f"output.pdb_dir={rf2_out}",
-        "model.model_weights=/home/weights/RF2_ab.pt",
-    ])
-    code3, log3_tail = exec_in_worker(cmd3, job_dir, job_id, stage="rf2")
-    if code3 != 0 or not list(rf2_out.glob("*.pdb")):
+    fold_inp = mpnn_out
+    fold_out = out_dir / "fold"
+    ensure_dirs(fold_out)
+    
+    if fold == "RF2":  # RoseTTAFold2
+        cmd3 = " ".join([
+            "poetry run python /home/src/rfantibody/rf2/rf2_predict.py",
+            f"input.pdb_dir={fold_inp}",
+            f"output.pdb_dir={fold_out}",
+            "model.model_weights=/home/weights/RF2_ab.pt",
+        ])
+        stage_name = "rf2"
+    else:  # Alphafold3 (AF3)
+        # AF3 입력 준비
+        af3_input_dir = out_dir / "af3_input"
+        num_inputs = prepare_af3_input(fold_inp, af3_input_dir)
+        
+        cmd3 = " ".join([
+            "poetry run python /home/src/rfantibody/af3/run_alphafold.py",
+            f"--input_dir={af3_input_dir}",
+            f"--output_dir={fold_out}",
+            "--model_dir=/home/weights/af3",
+            "--run_inference",
+            "--run_data_pipeline=false",
+            "--num_recycles=3",
+            "--num_seeds=1",
+        ])
+        stage_name = "af3"
+        
+    code3, log3_tail = exec_in_worker(cmd3, job_dir, job_id, stage=stage_name)
+    if code3 != 0 or not list(fold_out.glob("*.pdb")):
         return {
-            "status": "error",
-            "stage": "rf2",
+            "status": "error", 
+            "stage": stage_name,
             "jobId": job_id,
             "log_tail": (log3_tail or "")[-4000:],
-        }
-
-    
+        }    
     (out_dir / "heartbeat.txt").write_text("ok\n")
 
     has_any = any(out_dir.rglob("*"))

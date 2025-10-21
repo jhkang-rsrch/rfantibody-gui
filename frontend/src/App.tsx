@@ -29,6 +29,7 @@ import { Download, Info, Play, Loader2 } from "lucide-react";
 export default function App() {
   const [jobName, setJobName] = useState("");
   const [mode, setMode] = useState("Antibody");
+  const [fold, setFold] = useState("AF3"); // 기본값을 Alphafold3로 설정
   const [frameworkFile, setFrameworkFile] = useState<File | null>(null);
   const [targetFile, setTargetFile] = useState<File | null>(null);
 
@@ -93,6 +94,7 @@ export default function App() {
       const fd = new FormData();
       fd.append("jobName", effectiveJobName);
       fd.append("mode", mode);
+      fd.append("fold", fold);  // Structure Prediction Model 추가
 
       // Hotspots: omit when empty to represent "null/none"
       const effHotspots = getEffectiveHotspots().trim();
@@ -198,6 +200,30 @@ export default function App() {
               <CardTitle>Service Configuration</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
+              {/* Structure Prediction Model */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  Structure Prediction Model
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="w-4 h-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Select the model for protein structure prediction.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+                <Select value={fold} onValueChange={setFold}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="AF3">Alphafold3</SelectItem>
+                    <SelectItem value="RF2">RoseTTAFold2</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               {/* Mode */}
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
