@@ -27,32 +27,39 @@ git clone https://github.com/jhkang-rsrch/rfantibody-gui.git
 cd rfantibody-gui
 ```
 
-3. Prepare RFAntibody
+3-1. Prepare RFAntibody
 ```bash
 cd third_party/RFantibody
 bash include/download_weights.sh
 ```
 
-3. Launch Docker containers
+3-2. Prepare AlphaFold3
+download DB
+```bash
+cd ../alphafold3
+./fetch_databases.sh ../af3_data/af3_db
+```
+
+4. Launch Docker containers
 ```bash
 cd ../..
 # You start here once installed
 docker compose up -d
 ```
 
-4. Waiting for intalling RFAntibody
+5. Waiting for intalling RFAntibody
 It may takes over 240s.
 ```bash
 docker logs -f rfantibody-worker
 ```
 
-5. 🌐 Access
+6. 🌐 Access
 Open your browser and visit:
 ```
 http://localhost:2239
 ```
 
-6. After use
+7. After use
 To turn off,
 ```bash
 docker compose down
