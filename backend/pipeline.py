@@ -5,6 +5,7 @@ from typing import Dict, Any, List, Tuple
 import docker
 from loguru import logger
 
+from af3_util import prepare_af3_cif_input, prepare_af3_json_input
 
 JOBS_ROOT = Path(os.getenv("JOBS_ROOT", "/data/jobs"))
 
@@ -223,31 +224,47 @@ def orchestrate_pipeline(
             "model.model_weights=/home/weights/RF2_ab.pt",
         ])
         stage_name = "rf2"
-    else:  # Alphafold3 (AF3)
-        # AF3 입력 준비
+    elif fold == "AF3":  # AlphaFold 3
+        af3_input_cif_dir = out_dir / "af3_cif_dir"
+        ensure_dirs(af3_input_cif_dir)
+        prepare_af3_cif_input(fold_inp, af3_input_cif_dir)
+        
         af3_input_dir = out_dir / "af3_input"
-        num_inputs = prepare_af3_input(fold_inp, af3_input_dir)
+        ensure_dirs(af3_input_dir)
+        prepare_af3_json_input(af3_input_cif_dir, af3_input_dir)
         
         cmd3 = " ".join([
-            "poetry run python /home/src/rfantibody/af3/run_alphafold.py",
+            "CUDA_VISIBLE_DEVICES=0",
+            "docker exec alphafold3 python run_alphafold.py",
             f"--input_dir={af3_input_dir}",
             f"--output_dir={fold_out}",
-            "--model_dir=/home/weights/af3",
-            "--run_inference",
-            "--run_data_pipeline=false",
-            "--num_recycles=3",
-            "--num_seeds=1",
+            "--model_dir=/app/alphafold/../../root/models"
         ])
+        
+        # cmd3 = " ".join([
+        #     "poetry run python third_party/alphafold3/run_alphafold.py",
+        #     f"--input_dir={af3_input_dir}",
+        #     f"--output_dir={fold_out}",
+        #     "--model_dir=/home/weights/af3",
+        #     "--run_inference",
+        #     "--run_data_pipeline=false",
+        #     "--num_recycles=3",
+        #     "--num_seeds=1",
+        # ])
         stage_name = "af3"
         
     code3, log3_tail = exec_in_worker(cmd3, job_dir, job_id, stage=stage_name)
-    if code3 != 0 or not list(fold_out.glob("*.pdb")):
+
+    pdbs = list(fold_out.rglob("*.pdb"))
+    cifs = list(fold_out.rglob("*.cif"))
+
+    if code3 != 0 or (not pdbs and not cifs):
         return {
-            "status": "error", 
+            "status": "error",
             "stage": stage_name,
             "jobId": job_id,
             "log_tail": (log3_tail or "")[-4000:],
-        }    
+        } 
     (out_dir / "heartbeat.txt").write_text("ok\n")
 
     has_any = any(out_dir.rglob("*"))

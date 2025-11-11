@@ -21,3 +21,5 @@ dist-ssr
 *.sw?
 **/__pycache__/
 *.pyc
+test_data/
+af3_compare.py

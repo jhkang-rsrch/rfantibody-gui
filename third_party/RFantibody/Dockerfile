@@ -11,7 +11,9 @@ RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 RUN pip install poetry
+RUN apt-get update && apt-get install -y docker-cli
 
 WORKDIR /home
 
 CMD ["/bin/bash"]
+

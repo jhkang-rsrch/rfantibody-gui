@@ -1,21 +1,36 @@
-MIT License
+MIT License (applies only to original code written by KandO)
 
 Copyright (c) 2025 KandO
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+of this software and associated documentation files that are authored by KandO
+(the "Software"), to deal in such portions of the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, subject to the
+following conditions:
 
 The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+copies or substantial portions of the Software authored by KandO.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM ARISING FROM THE USE OF
+THIS SOFTWARE.
+
+---------------------------------------------------------------------
+
+NOTICE REGARDING THIRD-PARTY CODE
+
+This repository contains components derived from AlphaFold3, which is
+licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
+4.0 International License (CC BY-NC-SA 4.0).
+
+- All AlphaFold3-derived files remain under CC BY-NC-SA 4.0.
+- The CC BY-NC-SA 4.0 license terms override MIT for those components.
+- You may NOT use AlphaFold3-derived portions for commercial purposes.
+- You must distribute modifications to AlphaFold3-derived code under the
+  same CC BY-NC-SA 4.0 license.
+
+The full text of the CC BY-NC-SA 4.0 license is included in:
+third_party/alphafold3/LICENSE
