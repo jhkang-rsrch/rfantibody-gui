@@ -1,6 +1,8 @@
 # 🧬 RFantibody GUI
 
 [![GitHub](https://img.shields.io/badge/GitHub-RFantibody-blue?style=flat&logo=github)](https://github.com/RosettaCommons/RFantibody)
+[![GitHub](https://img.shields.io/badge/GitHub-AlphaFold3-blue?style=flat&logo=github)](https://github.com/google-deepmind/alphafold3)
+
 
 A user-friendly graphical interface for RFantibody. This web-based GUI makes it easy to access and utilize the powerful features of RFantibody.
 
@@ -39,6 +41,14 @@ download DB
 cd ../alphafold3
 ./fetch_databases.sh ../af3_data/af3_db
 ```
+
+3-3. Prepare AlphaFold3 parameter file
+From Alphafold3 official [Github](https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md)
+
+To request access to the AlphaFold 3 model parameters, please complete this [file](https://docs.google.com/forms/d/e/1FAIpQLSfWZAgo1aYk0O4MuAXZj8xRQ8DafeFJnldNOnh_13qAx2ceZw/viewform). Access will be granted at Google DeepMind’s sole discretion. We will aim to respond to requests within 2–3 business days. You may only use AlphaFold 3 model parameters if received directly from Google. Use is subject to these terms of use.
+
+You will get a zst file: af3.bin.zst
+Move this into third_party/af3_data/af3_parameter
 
 4. Launch Docker containers
 ```bash
