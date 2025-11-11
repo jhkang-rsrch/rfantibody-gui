@@ -23,3 +23,4 @@ dist-ssr
 *.pyc
 test_data/
 af3_compare.py
+third_party/alphafold3/
