@@ -11,6 +11,13 @@ A user-friendly graphical interface for RFantibody. This web-based GUI makes it 
 - 🐳 Easy Installation and Execution with Docker
 - 📊 Result Visualization and Analysis Tools
 
+### System Requirements
+- At least 1 GPU with 24 GB VRAM or more
+- RAM 64 GB
+- Disk 800GB or more
+- Docker 24+
+- Docker Compose v2
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -77,6 +84,24 @@ To turn off,
 docker compose down
 ```
 
+
+## Re-installation Guide
+1. Docker Container & image remove
+```bash
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -aq)
+```
+
+2. Remove previous ver directory
+Move to rfantibody-gui Terminal
+example: account@server:/workspace/rfantibody-gui
+```bash
+cd ..
+rm -rf rfantibody-gui
+```
+
+Now you can go to the first step!
 
 ## 💡 Tips
 - Initial startup might take some time due to Docker image downloads

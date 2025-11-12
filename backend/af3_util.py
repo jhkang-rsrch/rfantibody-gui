@@ -46,7 +46,7 @@ def json_maker(input_cif, output_json):
         "modelSeeds": [42],
         "sequences": sequences,
         "dialect": "alphafold3",
-        "version": 4, ## ★ Original was 1 ★
+        "version": 3, ## ★ Original was 1 ★
     }
 
     with open(output_json, "w") as f:
