@@ -104,6 +104,30 @@ rm -rf rfantibody-gui
 
 Now you can go to the first step!
 
+## Version Update Guide
+Current Version: v2.1.1
+
+Last Update: 2025-12-03
+
+1. Move to rfantibody-gui directory
+```bash
+cd rfantibody-gui
+```
+
+2. Pull the latest changes
+```bash
+git pull origin main
+```
+
+3. Docker Container & image remove
+```bash
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -aq)
+```
+
+Now you can go to **the second command of step 4 ("docker compose up -d")** in the Getting Started section!
+
 ## 💡 Tips
 - Initial startup might take some time due to Docker image downloads
 - If you encounter any issues, check the Docker logs:

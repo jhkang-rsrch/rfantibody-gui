@@ -3,13 +3,23 @@ from pathlib import Path
 import json
 from Bio.Data import IUPACData
 
+
+STAGE_SUFFIX = {
+    "rfdiffusion": "_rfd",      # RFdiffusion 출력
+    "mpnn": "_mpnn",            # ProteinMPNN 출력  
+    "cif": "_cif",              # CIF 변환 출력
+    "af3input": "_af3in",       # AF3 JSON 입력
+}
+
+
 def prepare_af3_json_input(input_dir, output_dir):
     input_dir = Path(input_dir)
     output_dir = Path(output_dir)
-    input_dir_cifs = list(input_dir.glob("*.cif"))
+    input_dir_cifs = sorted(input_dir.glob("*.cif"))  # 정렬하여 일관된 순서 보장
 
     for cif_file in input_dir_cifs:
-        output_json_file = output_dir / f"{cif_file.stem}.json"
+        # 단계 접미사 추가: ab_des_0_mpnn_cif.cif -> ab_des_0_mpnn_cif_af3in.json
+        output_json_file = output_dir / f"{cif_file.stem}{STAGE_SUFFIX['af3input']}.json"
         json_maker(cif_file, output_json_file)
 
 
@@ -58,11 +68,14 @@ def json_maker(input_cif, output_json):
 def prepare_af3_cif_input(input_dir, output_dir):
     input_dir = Path(input_dir)
     output_dir = Path(output_dir)
-    parser = PDB.PDBParser()
+    parser = PDB.PDBParser(QUIET=True)
 
-    input_dir_pdbs = list(input_dir.glob("*.pdb"))
+    input_dir_pdbs = sorted(input_dir.glob("*.pdb"))  # 정렬하여 일관된 순서 보장
     for idx, pdb_file in enumerate(input_dir_pdbs):
-        structure = parser.get_structure(f"X_{idx}", pdb_file)
+        structure = parser.get_structure(pdb_file.stem, pdb_file)
         io = PDB.MMCIFIO()
         io.set_structure(structure)
-        io.save((output_dir / f"input_{idx+1}.cif").as_posix())
+        # 단계 접미사 추가: ab_des_0_mpnn.pdb -> ab_des_0_mpnn_cif.cif
+        output_cif = output_dir / f"{pdb_file.stem}{STAGE_SUFFIX['cif']}.cif"
+        io.save(output_cif.as_posix())
+        print(f"✅ CIF saved: {pdb_file.name} -> {output_cif.name}")
