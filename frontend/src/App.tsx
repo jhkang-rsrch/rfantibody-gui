@@ -147,7 +147,7 @@ export default function App() {
           <div className="mb-8 relative">
             <div className="absolute top-0 right-0">
               <Badge variant="secondary" className="text-xs">
-                v1.0.9
+                v2.1.1
               </Badge>
             </div>
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
