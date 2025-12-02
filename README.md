@@ -1,4 +1,4 @@
-# 🧬 RFantibody GUI
+# 🧬 RFantibody+Alphafold3 GUI
 
 [![GitHub](https://img.shields.io/badge/GitHub-RFantibody-blue?style=flat&logo=github)](https://github.com/RosettaCommons/RFantibody)
 [![GitHub](https://img.shields.io/badge/GitHub-AlphaFold3-blue?style=flat&logo=github)](https://github.com/google-deepmind/alphafold3)
